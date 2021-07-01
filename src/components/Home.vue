@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {board} from '../api'
+import { board, setAuthInHeader } from '../api'
 
 export default {
   data () {
@@ -29,6 +29,8 @@ export default {
     }
   },
   created () {
+    console.log('Home Component Created !!!')
+    setAuthInHeader(localStorage.getItem('token'))
     this.fetchData()
   },
   updated () {
@@ -41,6 +43,7 @@ export default {
       this.loading = true
       board.fetch()
         .then(data => {
+          console.log('board list : ', data.list)
           this.boards = data.list
         })
         .finally(_ => {

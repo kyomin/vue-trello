@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { auth, setAuthInHeader } from '../api'
+import { auth } from '../api'
 
 export default {
   data () {
@@ -37,6 +37,7 @@ export default {
     }
   },
   created () {
+    console.log('Login Component Created !!!')
     this.rPath = this.$route.query.rPath || '/'
   },
   methods: {
@@ -44,8 +45,6 @@ export default {
       auth.login(this.email, this.password)
         .then(data => {
           localStorage.setItem('token', data.accessToken)
-          setAuthInHeader(data.accessToken)
-          console.log('login token : ', localStorage.getItem('token'))
           this.$router.push(this.rPath)
         })
         .catch(err => {
@@ -64,5 +63,4 @@ export default {
 .error {
   color: #f00;
 }
-
 </style>
