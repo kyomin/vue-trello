@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { board } from '../api'
+import { board, setAuthInHeader } from '../api'
 
 export default {
   data () {
@@ -33,6 +33,7 @@ export default {
   },
   created () {
     console.log('Home component created')
+    setAuthInHeader(localStorage.getItem('token'))
     this.fetchData()
   },
   methods: {

@@ -10,7 +10,7 @@ import router from '../router'
 const DOMAIN = 'http://localhost:3000'
 const UNAUTHORIZED = 401
 const onUnauthorized = () => {
-  router.push('/login')
+  if (this.$route.path !== '/login') { router.push('/login') }
 }
 
 const request = (method, url, data) => {
@@ -23,8 +23,6 @@ const request = (method, url, data) => {
     .catch(error => {
       // 객체 안에 일치하는 키와 매핑되어 값이 할당된다.
       const { status } = error.response
-      console.log('request status : ', status)
-      console.log('error.response : ', error.response)
 
       if (status === UNAUTHORIZED) return onUnauthorized()
       throw error.response
