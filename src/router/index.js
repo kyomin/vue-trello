@@ -15,6 +15,8 @@ const requireAuth = (to, from, next) => {
 
   const isAuth = localStorage.getItem('token')
   const loginPath = `/login?rPath=${encodeURIComponent(to.path)}`
+
+  console.log('현 컴포넌트로 라우팅 시 현재 토큰 정보 : ', isAuth)
   isAuth ? next() : next(loginPath)
 }
 

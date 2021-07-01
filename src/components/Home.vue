@@ -6,7 +6,7 @@
         <div v-if="loading">Loading...</div>
         <div v-else>
           <div v-for="board in boards" :key="board.id">
-            {{ board }}
+            <pre>{{ board }}</pre>
           </div>
         </div>
         <ul>

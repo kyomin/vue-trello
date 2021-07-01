@@ -21,20 +21,29 @@ const request = (method, url, data) => {
   })
     .then(result => result.data)
     .catch(error => {
-      console.error('error response', error.response)
-      console.error('error type', typeof (error))
-      console.error('error properties', Object.keys(error))
-
       // 객체 안에 일치하는 키와 매핑되어 값이 할당된다.
       const { status } = error.response
+      console.log('request status : ', status)
+      console.log('error.response : ', error.response)
 
       if (status === UNAUTHORIZED) return onUnauthorized()
-      throw Error(error)
+      throw error.response
     })
+}
+
+export const setAuthInHeader = token => {
+  // axios를 통한 모든 요청을 날릴 때, 헤더에 토큰 정보를 실을 수 있도록 셋팅한다.
+  axios.defaults.headers.common['Authorization'] = token ? `Bearer ${token}` : null
 }
 
 export const board = {
   fetch () {
     return request('get', '/boards')
+  }
+}
+
+export const auth = {
+  login (email, password) {
+    return request('post', '/login', { email, password })
   }
 }
