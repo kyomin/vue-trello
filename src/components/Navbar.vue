@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     logout () {
+      console.log('로그아웃')
       delete localStorage.token
       setAuthInHeader(null)
       this.$router.push('/login')

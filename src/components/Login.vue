@@ -45,10 +45,11 @@ export default {
         .then(data => {
           localStorage.setItem('token', data.accessToken)
           setAuthInHeader(data.accessToken)
+          console.log('login token : ', localStorage.getItem('token'))
           this.$router.push(this.rPath)
         })
         .catch(err => {
-          this.error = err.data ? err.data.error : 'Login Failure'
+          this.error = err.data.error
         })
     }
   }
