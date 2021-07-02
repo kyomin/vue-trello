@@ -29,7 +29,10 @@
 
 <script>
 import Modal from './Modal.vue'
-import { mapMutations } from 'vuex'
+
+// Vuex가 제공하는 helper methods를 이용하면 함수처럼 사용 가능하다.
+// 별도로 this.$store.commit, this.$store.dispatch를 명시하지 않아도 된다.
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -54,11 +57,19 @@ export default {
     ...mapMutations([
       'SET_IS_ADD_BOARD_CLICKED'
     ]),
+    ...mapActions([
+      'ADD_BOARD'
+    ]),
     addBoard () {
       // 기존에는 이벤트를 발생시켜 부모에서 값 셋팅을 하도록 위임했다.
       // 하지만, 중앙 저장소가 있기 때문에 여기서 처리해도 된다.
       this.SET_IS_ADD_BOARD_CLICKED(false)
-      this.$emit('submit', this.input)
+
+      // 기존에는 상위에서 해당 이벤트를 받아 API 호출을 하였다.
+      // 하지만, action을 통해 여기서 직접 API 호출을 한다.
+      this.$emit('submit')
+      // this.$store.dispatch('ADD_BOARD', {title: this.input})
+      this.ADD_BOARD({title: this.input})
     }
   }
 }

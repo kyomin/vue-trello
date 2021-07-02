@@ -70,13 +70,9 @@ export default {
         })
     },
     onAddBoard (title) {
-      board.create(title)
-        .then(data => {
-          console.log('create board response data : ', data)
-
-          // 서버에 보드 생성과 동시에 목록을 다시 불러옴으로써 refresh 효과를 낸다
-          this.fetchData()
-        })
+      // 서버에 보드 생성과 동시에 목록을 다시 불러옴으로써 refresh 효과를 낸다.
+      // 서버에 보드를 생성하는 API Call은 Vuex의 액션이 담당한다.
+      this.fetchData()
     }
   }
 }
