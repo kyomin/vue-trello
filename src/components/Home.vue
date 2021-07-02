@@ -25,6 +25,7 @@
 <script>
 import { board, setAuthInHeader } from '../api'
 import AddBoard from './AddBoard.vue'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -34,9 +35,13 @@ export default {
     return {
       loading: false,
       boards: [],
-      error: '',
-      isAddBoardClicked: false
+      error: ''
     }
+  },
+  computed: {
+    ...mapState([
+      'isAddBoardClicked'
+    ])
   },
   created () {
     console.log('Home Component Created !!!')
@@ -61,7 +66,7 @@ export default {
         })
     },
     addBoard () {
-      this.isAddBoardClicked = true
+
     },
     onAddBoard (title) {
       board.create(title)
