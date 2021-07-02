@@ -4,7 +4,7 @@
       <h2>
         Create new board
         <a href="" class="modal-default-button"
-          @click.prevent="close">&times;</a>
+          @click.prevent="SET_IS_ADD_BOARD_CLICKED(false)">&times;</a>
       </h2>
     </div>
     <div slot="body">
@@ -29,6 +29,7 @@
 
 <script>
 import Modal from './Modal.vue'
+import { mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -50,13 +51,13 @@ export default {
     this.$refs.input.focus()
   },
   methods: {
-    close () {
-      console.log('close method called in AddBoard Component')
-      this.$emit('close')
-    },
+    ...mapMutations([
+      'SET_IS_ADD_BOARD_CLICKED'
+    ]),
     addBoard () {
-      console.log('addBoard method called in AddBoard Component')
-      this.$emit('close')
+      // 기존에는 이벤트를 발생시켜 부모에서 값 셋팅을 하도록 위임했다.
+      // 하지만, 중앙 저장소가 있기 때문에 여기서 처리해도 된다.
+      this.SET_IS_ADD_BOARD_CLICKED(false)
       this.$emit('submit', this.input)
     }
   }

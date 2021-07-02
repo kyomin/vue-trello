@@ -5,7 +5,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    isAddBoardClicked: true
+    isAddBoardClicked: false
+  },
+  mutations: {
+    SET_IS_ADD_BOARD_CLICKED (state, toggle) {
+      state.isAddBoardClicked = toggle
+    }
   }
 })
 

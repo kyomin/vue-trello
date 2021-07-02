@@ -9,7 +9,7 @@
         </router-link>
       </div>
       <div class="board-item board-item-new">
-        <a class="new-board-btn" href="" @click.prevent="addBoard">
+        <a class="new-board-btn" href="" @click.prevent="SET_IS_ADD_BOARD_CLICKED(true)">
           Create new board...
         </a>
       </div>
@@ -25,7 +25,7 @@
 <script>
 import { board, setAuthInHeader } from '../api'
 import AddBoard from './AddBoard.vue'
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   components: {
@@ -54,6 +54,10 @@ export default {
     })
   },
   methods: {
+    // vuex store의 뮤테이션을 함수처럼 호출해 쓸 수 있다.
+    ...mapMutations([
+      'SET_IS_ADD_BOARD_CLICKED'
+    ]),
     fetchData () {
       this.loading = true
       board.fetch()
@@ -64,9 +68,6 @@ export default {
         .finally(_ => {
           this.loading = false
         })
-    },
-    addBoard () {
-
     },
     onAddBoard (title) {
       board.create(title)
