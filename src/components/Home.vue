@@ -14,18 +14,28 @@
         </a>
       </div>
     </div>
+    <AddBoard
+      v-if="isAddBoardClicked"
+      @close="isAddBoardClicked=false"
+      @submit="onAddBoard"
+    />
   </div>
 </template>
 
 <script>
 import { board, setAuthInHeader } from '../api'
+import AddBoard from './AddBoard.vue'
 
 export default {
+  components: {
+    AddBoard
+  },
   data () {
     return {
       loading: false,
       boards: [],
-      error: ''
+      error: '',
+      isAddBoardClicked: false
     }
   },
   created () {
@@ -51,7 +61,16 @@ export default {
         })
     },
     addBoard () {
-      console.log('addBoard()')
+      this.isAddBoardClicked = true
+    },
+    onAddBoard (title) {
+      board.create(title)
+        .then(data => {
+          console.log('create board response data : ', data)
+
+          // 서버에 보드 생성과 동시에 목록을 다시 불러옴으로써 refresh 효과를 낸다
+          this.fetchData()
+        })
     }
   }
 }
