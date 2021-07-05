@@ -5,12 +5,35 @@
         {{data.title}}
       </div>
     </div>
+
+    <div v-if="isAddCard">
+      <AddCard @close="isAddCard=false" />
+    </div>
+    <div v-else>
+      <a class="add-card-btn" href="" @click.prevent="isAddCardClicked">
+        &plus; Add a card...
+      </a>
+    </div>
   </div>
 </template>
 
 <script>
+import AddCard from './AddCard.vue'
+
 export default {
-  props: ['data']
+  components: {AddCard},
+  props: ['data'],
+  data () {
+    return {
+      isAddCard: false
+    }
+  },
+  methods: {
+    isAddCardClicked () {
+      console.log('isAddCardClicked called!!!')
+      this.isAddCard = true
+    }
+  }
 }
 </script>
 
