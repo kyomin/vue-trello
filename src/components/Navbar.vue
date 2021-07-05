@@ -12,22 +12,20 @@
 </template>
 
 <script>
-import { setAuthInHeader } from '../api'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   computed: {
-    isAuth () {
-      // 로컬스토리지를 실시간으로 감시하지 못한다.
-      // 때문에, 브라우저의 로컬스토리지 값은 변경이 잘 일어나도
-      // 뷰에서는 즉각적으로 인지하지 못한다.
-      // 이는 지극히 정상이다.
-      return !!localStorage.getItem('token')
-    }
+    ...mapGetters([
+      'isAuth'
+    ])
   },
   methods: {
+    ...mapMutations([
+      'LOGOUT'
+    ]),
     logout () {
-      delete localStorage.token
-      setAuthInHeader(null)
+      this.LOGOUT()
       this.$router.push('/login')
     }
   }

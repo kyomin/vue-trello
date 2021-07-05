@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { auth } from '../api'
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -38,13 +38,20 @@ export default {
   },
   created () {
     console.log('Login Component Created !!!')
+    console.log('this.$route.query.rPath : ', this.$route.query.rPath)
     this.rPath = this.$route.query.rPath || '/'
   },
   methods: {
+    ...mapActions([
+      'LOGIN'
+    ]),
     onSubmit () {
-      auth.login(this.email, this.password)
+      this.LOGIN({
+        email: this.email,
+        password: this.password
+      })
         .then(data => {
-          localStorage.setItem('token', data.accessToken)
+          console.log('로그인 성공 후 return path : ', this.rPath)
           this.$router.push(this.rPath)
         })
         .catch(err => {
