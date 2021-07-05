@@ -62,17 +62,11 @@ export default {
       'FETCH_BOARDS'
     ]),
     addBoard () {
-      // 기존에는 이벤트를 발생시켜 부모에서 값 셋팅을 하도록 위임했다.
-      // 하지만, 중앙 저장소가 있기 때문에 여기서 처리해도 된다.
       this.SET_IS_ADD_BOARD_CLICKED(false)
       this.ADD_BOARD({title: this.input})
-        .then(() => {
-          this.FETCH_BOARDS()
+        .then(({id}) => {
+          this.$router.push(`/b/${id}`)
         })
-
-      // 구지 이벤트를 발생시켜 부모인 Home 컴포넌트에서 데이터 fetch를 통해 refresh 시키지 않고,
-      // 위와 같이 동기를 맞춰 여기서 처리한다.
-      // this.$emit('submit')
     }
   }
 }
