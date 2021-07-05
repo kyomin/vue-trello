@@ -58,18 +58,21 @@ export default {
       'SET_IS_ADD_BOARD_CLICKED'
     ]),
     ...mapActions([
-      'ADD_BOARD'
+      'ADD_BOARD',
+      'FETCH_BOARDS'
     ]),
     addBoard () {
       // 기존에는 이벤트를 발생시켜 부모에서 값 셋팅을 하도록 위임했다.
       // 하지만, 중앙 저장소가 있기 때문에 여기서 처리해도 된다.
       this.SET_IS_ADD_BOARD_CLICKED(false)
-
-      // 기존에는 상위에서 해당 이벤트를 받아 API 호출을 하였다.
-      // 하지만, action을 통해 여기서 직접 API 호출을 한다.
-      this.$emit('submit')
-      // this.$store.dispatch('ADD_BOARD', {title: this.input})
       this.ADD_BOARD({title: this.input})
+        .then(() => {
+          this.FETCH_BOARDS()
+        })
+
+      // 구지 이벤트를 발생시켜 부모인 Home 컴포넌트에서 데이터 fetch를 통해 refresh 시키지 않고,
+      // 위와 같이 동기를 맞춰 여기서 처리한다.
+      // this.$emit('submit')
     }
   }
 }

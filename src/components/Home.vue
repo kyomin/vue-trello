@@ -17,15 +17,13 @@
     <AddBoard
       v-if="isAddBoardClicked"
       @close="isAddBoardClicked=false"
-      @submit="onAddBoard"
     />
   </div>
 </template>
 
 <script>
-import { board, setAuthInHeader } from '../api'
 import AddBoard from './AddBoard.vue'
-import { mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -34,18 +32,18 @@ export default {
   data () {
     return {
       loading: false,
-      boards: [],
       error: ''
     }
   },
   computed: {
-    ...mapState([
-      'isAddBoardClicked'
-    ])
+    // 이렇게 함으로써 vuex store의 state 변수들을 마치 현 컴포넌트의 data처럼 쓸 수 있다.
+    ...mapState({
+      isAddBoardClicked: 'isAddBoardClicked',
+      boards: 'boards'
+    })
   },
   created () {
     console.log('Home Component Created !!!')
-    setAuthInHeader(localStorage.getItem('token'))
     this.fetchData()
   },
   updated () {
@@ -54,25 +52,20 @@ export default {
     })
   },
   methods: {
-    // vuex store의 뮤테이션을 함수처럼 호출해 쓸 수 있다.
+    // vuex store의 뮤테이션 및 액션을 함수처럼 호출해 쓸 수 있다.
+    // 이제 현 컴포넌트에서 this 스코프로 접근해 사용할 수 있다.
     ...mapMutations([
       'SET_IS_ADD_BOARD_CLICKED'
     ]),
+    ...mapActions([
+      'FETCH_BOARDS'
+    ]),
     fetchData () {
       this.loading = true
-      board.fetch()
-        .then(data => {
-          console.log('board list : ', data.list)
-          this.boards = data.list
-        })
+      this.FETCH_BOARDS()
         .finally(_ => {
           this.loading = false
         })
-    },
-    onAddBoard (title) {
-      // 서버에 보드 생성과 동시에 목록을 다시 불러옴으로써 refresh 효과를 낸다.
-      // 서버에 보드를 생성하는 API Call은 Vuex의 액션이 담당한다.
-      this.fetchData()
     }
   }
 }
