@@ -2,7 +2,7 @@
   <div id="app">
     <Navbar />
     <!-- 라우터 경로에 따라 바뀔 레이아웃이 여기에 삽입된다. -->
-    <router-view></router-view>
+    <router-view class="container"></router-view>
   </div>
 </template>
 
