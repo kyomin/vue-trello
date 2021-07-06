@@ -4,22 +4,21 @@
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
-
+            <!-- Modal Header -->
             <div class="modal-header">
               <slot name="header">
-
               </slot>
             </div>
 
+            <!-- Modal Body -->
             <div class="modal-body">
               <slot name="body">
-
               </slot>
             </div>
 
+            <!-- Modal Footer -->
             <div class="modal-footer">
               <slot name="footer">
-
                 <button class="modal-default-button" @click="$emit('close')">
                   OK
                 </button>

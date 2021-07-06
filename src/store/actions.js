@@ -35,6 +35,13 @@ const actions = {
         // 카드 등록이 성공하게 되면 다시 보드 정보를 불러옴으로써 카드 리스트에 반영
         dispatch('FETCH_BOARD', {id: state.board.id})
       })
+  },
+
+  FETCH_CARD ({commit}, {id}) {
+    return api.card.fetch(id)
+      .then(data => {
+        commit('SET_CARD', data.item)
+      })
   }
 }
 
