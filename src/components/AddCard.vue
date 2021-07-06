@@ -9,7 +9,10 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
+  props: ['listId'],
   data () {
     return {
       inputTitle: ''
@@ -22,11 +25,22 @@ export default {
   },
   mounted () {
     this.$refs.inputText.focus()
-    this.setupClickOutside(this.$el)
+    // this.setupClickOutside(this.$el)
   },
   methods: {
+    ...mapActions([
+      'ADD_CARD'
+    ]),
     onSubmit () {
       console.log('Add Card Submit Called!!')
+
+      // submit 시에 한 번 더 form 값 유효성 체크!
+      if (this.invalidInput) return
+      const {inputTitle, listId} = this
+      this.ADD_CARD({title: inputTitle, listId})
+        .finally(() => {
+          this.inputTitle = ''
+        })
     },
     setupClickOutside (el) { // 현재 컴포넌트 정보를 받고
       console.log('el on mounted : ', el)
@@ -39,6 +53,8 @@ export default {
           return
         }
 
+        // 1. Add a card 버튼을 눌르고, 컴포넌트가 마운트되면서 이벤트 등록과 동시에 클릭 이벤트 발생해 이 부분 항상 실행...
+        // 2. 마운트 될 때마다 이벤트 등록하므로 등록된 이벤트 개수가 클릭해서 팝업 띄울 때마다 무한정 늘어남...
         console.log('click outside')
         // this.$emit('close')
       })

@@ -5,12 +5,14 @@
         {{data.title}}
       </div>
     </div>
-
+    <div class="card-list">
+      <CardItem v-for="card in data.cards" :key="card.id" :data="card" />
+    </div>
     <div v-if="isAddCard">
-      <AddCard @close="isAddCard=false" />
+      <AddCard :list-id="data.id" @close="isAddCard=false" />
     </div>
     <div v-else>
-      <a class="add-card-btn" href="" @click.prevent="isAddCardClicked">
+      <a class="add-card-btn" href="" @click.prevent="isAddCard=true">
         &plus; Add a card...
       </a>
     </div>
@@ -19,19 +21,14 @@
 
 <script>
 import AddCard from './AddCard.vue'
+import CardItem from './CardItem.vue'
 
 export default {
-  components: {AddCard},
+  components: {AddCard, CardItem},
   props: ['data'],
   data () {
     return {
       isAddCard: false
-    }
-  },
-  methods: {
-    isAddCardClicked () {
-      console.log('isAddCardClicked called!!!')
-      this.isAddCard = true
     }
   }
 }
