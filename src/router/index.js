@@ -28,7 +28,7 @@ const router = new VueRouter({
       component: Board,
       beforeEnter: requireAuth,
       // 중첩 라우팅. 위의 경로 하위에 적용되는 컴포넌트이다.
-      // 때문에, 이 컴포넌트가 그려질 부분을 router-view 태그로 상위 라우팅의 컴포넌트에서 지정해줘야 한다.
+      // 때문에, 이 컴포넌트가 그려질 부분을 router-view 태그로 상위 라우팅의 컴포넌트(여기선 Board 컴포넌트)에서 지정해줘야 한다.
       children: [
         { path: 'c/:cid', component: Card, beforeEnter: requireAuth }
       ]

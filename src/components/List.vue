@@ -24,7 +24,7 @@ import AddCard from './AddCard.vue'
 import CardItem from './CardItem.vue'
 
 export default {
-  components: {AddCard, CardItem},
+  components: { AddCard, CardItem },
   props: ['data'],
   data () {
     return {
