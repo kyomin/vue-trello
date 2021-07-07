@@ -5,21 +5,44 @@
       <a class="header-close-btn" href="" @click.prevent="onClose">&times;</a>
     </div>
     <ul class="menu-list">
-      <li>Menu 1</li>
+      <li><a href="" @click.prevent="onDeleteBoard">Delete Board</a></li>
     </ul>
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
+  computed: {
+    ...mapState({
+      board: 'board'
+    })
+  },
   methods: {
     ...mapMutations([
       'SET_IS_SHOW_BOARD_SETTINGS'
     ]),
+    ...mapActions([
+      'DELETE_BOARD'
+    ]),
     onClose () {
       this.SET_IS_SHOW_BOARD_SETTINGS(false)
+    },
+    onDeleteBoard () {
+      if (!window.confirm(`${this.board.title} 보드를 삭제하시겠습니까?`)) return
+      this.DELETE_BOARD({ id: this.board.id })
+        .then(() => {
+          // 삭제 후에는 열려있던 사이드 바를 닫아준다.
+          this.SET_IS_SHOW_BOARD_SETTINGS(false)
+        })
+        .then(() => {
+          // 루트 경로로 이동한다.
+          this.$router.push('/')
+        })
+        .catch(err => {
+          console.error('board delete api response error : ', err)
+        })
     }
   }
 }

@@ -34,6 +34,9 @@ const actions = {
       commit('SET_BOARD', data.item)
     })
   },
+  DELETE_BOARD (_, { id }) {
+    return api.board.destroy(id)
+  },
 
   /*
     @@@@@@@@@@@@@@@@@@@@@@
