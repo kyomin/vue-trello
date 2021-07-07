@@ -5,7 +5,8 @@ const state = {
   board: {}, // 선택한 특정 보드의 정보
   card: {},
   bodyColor: '#ffffff',
-  navbarColor: '#026aa7'
+  navbarColor: '#026aa7',
+  isShowBoardSettings: false
 }
 
 export default state

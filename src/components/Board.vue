@@ -4,6 +4,7 @@
       <div class="board">
         <div class="board-header">
           <span class="board-title">{{board.title}}</span>
+          <a href="" class="board-header-btn show-menu" @click.prevent="onShowSettings">... Show Menu</a>
         </div>
         <div class="list-section-wrapper">
           <div class="list-section">
@@ -14,6 +15,7 @@
         </div>
       </div>
     </div>
+    <BoardSettings v-if="isShowBoardSettings" />
     <router-view></router-view>
   </div>
 </template>
@@ -21,11 +23,13 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
 import List from './List.vue'
+import BoardSettings from './BoardSettings.vue'
 import dragger from '../utils/dragger'
 
 export default {
   components: {
-    List
+    List,
+    BoardSettings
   },
   data () {
     return {
@@ -36,7 +40,8 @@ export default {
   },
   computed: {
     ...mapState({
-      board: 'board'
+      board: 'board',
+      isShowBoardSettings: 'isShowBoardSettings'
     })
   },
   created () {
@@ -44,6 +49,7 @@ export default {
       .then(() => {
         this.SET_THEME(this.board.bgColor)
       })
+    this.SET_IS_SHOW_BOARD_SETTINGS(false)
   },
   updated () {
     // Board의 자식 컴포넌트들이 다 렌더링된 다음에 호출하기 위함
@@ -51,7 +57,8 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'SET_THEME'
+      'SET_THEME',
+      'SET_IS_SHOW_BOARD_SETTINGS'
     ]),
     ...mapActions([
       'FETCH_BOARD',
@@ -89,6 +96,9 @@ export default {
         console.log('targetCard : ', targetCard)
         this.UPDATE_CARD(targetCard)
       })
+    },
+    onShowSettings () {
+      this.SET_IS_SHOW_BOARD_SETTINGS(true)
     }
   }
 }
