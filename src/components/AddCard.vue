@@ -37,10 +37,20 @@ export default {
       // submit 시에 한 번 더 form 값 유효성 체크!
       if (this.invalidInput) return
       const {inputTitle, listId} = this
-      this.ADD_CARD({title: inputTitle, listId})
+      const pos = this.newCardPos() // 추가 시에 동일한 pos 값으로 create 되는 것을 방지
+      this.ADD_CARD({title: inputTitle, listId, pos})
         .finally(() => {
           this.inputTitle = ''
         })
+    },
+    newCardPos () {
+      const curList = this.$store.state.board.lists.filter(l => l.id === this.listId)[0]
+      if (!curList) return 65535 // 기본값인 경우
+
+      const { cards } = curList
+      if (!cards.length) return 65535 // 기본값인 경우
+
+      return cards[cards.length - 1].pos * 2
     },
     setupClickOutside (el) { // 현재 컴포넌트 정보를 받고
       console.log('el on mounted : ', el)
