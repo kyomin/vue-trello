@@ -59,6 +59,13 @@ const actions = {
         // 업데이트가 완료되면, 갱신된 내용을 화면에 다시 뿌리기 위함이다.
         dispatch('FETCH_BOARD', { id: state.board.id })
       })
+  },
+  DELETE_CARD ({ dispatch, state }, { id }) {
+    return api.card.destroy(id)
+      .then(() => {
+        // 카드 삭제가 완료되면, 다시 보드 정보를 불러옴으로써 카드 리스트에 반영
+        dispatch('FETCH_BOARD', { id: state.board.id })
+      })
   }
 }
 
