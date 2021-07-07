@@ -45,6 +45,7 @@ export default {
   created () {
     console.log('Home Component Created !!!')
     this.fetchData()
+    this.SET_THEME()
   },
   updated () {
     this.$refs.boardItem.forEach(el => {
@@ -55,7 +56,8 @@ export default {
     // vuex store의 뮤테이션 및 액션을 함수처럼 호출해 쓸 수 있다.
     // 이제 현 컴포넌트에서 this 스코프로 접근해 사용할 수 있다.
     ...mapMutations([
-      'SET_IS_ADD_BOARD_CLICKED'
+      'SET_IS_ADD_BOARD_CLICKED',
+      'SET_THEME'
     ]),
     ...mapActions([
       'FETCH_BOARDS'
