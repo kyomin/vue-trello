@@ -43,17 +43,23 @@ export const auth = {
 }
 
 export const board = {
-  fetch (id) {
-    return id ? request('get', `/boards/${id}`) : request('get', '/boards')
-  },
   create (title) {
     return request('post', '/boards', {title})
   },
-  destroy (id) {
-    return request('delete', `/boards/${id}`)
+  fetch (id) {
+    return id ? request('get', `/boards/${id}`) : request('get', '/boards')
   },
   update (id, payload) {
     return request('put', `/boards/${id}`, payload)
+  },
+  destroy (id) {
+    return request('delete', `/boards/${id}`)
+  }
+}
+
+export const list = {
+  create (payload) {
+    return request('post', '/lists', payload)
   }
 }
 

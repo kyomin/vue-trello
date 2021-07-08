@@ -46,6 +46,18 @@ const actions = {
 
   /*
     @@@@@@@@@@@@@@@@@@@@@@
+        For List Api Call
+    @@@@@@@@@@@@@@@@@@@@@@
+  */
+  ADD_LIST ({ dispatch, state }, { title, boardId, pos }) {
+    return api.list.create({ title, boardId, pos })
+      .then(() => {
+        dispatch('FETCH_BOARD', { id: state.board.id })
+      })
+  },
+
+  /*
+    @@@@@@@@@@@@@@@@@@@@@@
         For Card Api Call
     @@@@@@@@@@@@@@@@@@@@@@
   */
