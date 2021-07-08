@@ -6,6 +6,13 @@
     </div>
     <ul class="menu-list">
       <li><a href="" @click.prevent="onDeleteBoard">Delete Board</a></li>
+      <li>Change Background</li>
+      <div class="color-picker">
+        <a href="" data-value="rgb(0, 121, 191)" @click.prevent="onChangeTheme"></a>
+        <a href="" data-value="rgb(210, 144, 52)" @click.prevent="onChangeTheme"></a>
+        <a href="" data-value="rgb(81, 152, 57)" @click.prevent="onChangeTheme"></a>
+        <a href="" data-value="rgb(176, 70, 50)" @click.prevent="onChangeTheme"></a>
+      </div>
     </ul>
   </div>
 </template>
@@ -19,12 +26,19 @@ export default {
       board: 'board'
     })
   },
+  mounted () {
+    Array.from(this.$el.querySelectorAll('.color-picker a')).forEach(el => {
+      el.style.backgroundColor = el.dataset.value
+    })
+  },
   methods: {
     ...mapMutations([
-      'SET_IS_SHOW_BOARD_SETTINGS'
+      'SET_IS_SHOW_BOARD_SETTINGS',
+      'SET_THEME'
     ]),
     ...mapActions([
-      'DELETE_BOARD'
+      'DELETE_BOARD',
+      'UPDATE_BOARD'
     ]),
     onClose () {
       this.SET_IS_SHOW_BOARD_SETTINGS(false)
@@ -42,6 +56,15 @@ export default {
         })
         .catch(err => {
           console.error('board delete api response error : ', err)
+        })
+    },
+    onChangeTheme (el) {
+      const id = this.board.id
+      const bgColor = el.target.dataset.value
+      this.UPDATE_BOARD({ id, bgColor })
+        .then(() => {
+          // 서버에 색상 정보가 잘 업데이트 된 후에 브라우저에 반영한다.
+          this.SET_THEME(bgColor)
         })
     }
   }

@@ -51,6 +51,9 @@ export const board = {
   },
   destroy (id) {
     return request('delete', `/boards/${id}`)
+  },
+  update (id, payload) {
+    return request('put', `/boards/${id}`, payload)
   }
 }
 
