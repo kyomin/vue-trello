@@ -25,7 +25,7 @@ export default {
     ])
   },
   watch: {
-    'bodyColor': 'updateTheme' // 뮤테이션에 의해 값이 바뀌고 변화가 감지되면, 함수 호출해 실제 돔의 속성 변경시키기!
+    'bodyColor': 'updateTheme' // 뮤테이션에 의해 bodyColor의 값이 바뀌고 변화가 감지되면, 함수 호출해 실제 돔의 속성 변경시키기!
   },
   mounted () {
     this.updateTheme()
