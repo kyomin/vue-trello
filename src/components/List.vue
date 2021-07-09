@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" :data-list-id="data.id" :data-list-pos="data.pos" >
     <div class="list-header">
       <input v-if="isEditTitle" class="form-control input-title" type="text"
         ref="inputTitle" v-model="inputTitle" @blur="onBlurTitle" @keyup.enter="onSubmitTitle" />
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'UPDAATE_LIST'
+      'UPDATE_LIST'
     ]),
     onClickTitle () {
       this.isEditTitle = true
@@ -60,7 +60,7 @@ export default {
       const title = this.inputTitle
       if (title === this.data.title) return
 
-      this.UPDAATE_LIST({ id, title })
+      this.UPDATE_LIST({ id, title })
     }
   }
 }

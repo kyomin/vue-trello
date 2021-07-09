@@ -10,7 +10,8 @@
         </div>
         <div class="list-section-wrapper">
           <div class="list-section">
-            <div class="list-wrapper" v-for="list in board.lists" :key="list.pos">
+            <div class="list-wrapper" v-for="list in board.lists" :key="list.pos"
+              :data-list-id="list.id">
               <List :data="list" />
             </div>
             <div class="list-wrapper">
@@ -43,6 +44,7 @@ export default {
       bid: 0,
       loading: false,
       cDragger: null,
+      lDragger: null,
       isEditTitle: false,
       inputTitle: ''
     }
@@ -62,8 +64,9 @@ export default {
     this.SET_IS_SHOW_BOARD_SETTINGS(false)
   },
   updated () {
-    // Board의 자식 컴포넌트들이 다 렌더링된 다음에 호출하기 위함
+    // 이 라이프 사이클에서 정의하는 이유는 Board의 자식 컴포넌트들이 다 렌더링 된 다음에 호출하기 위함
     this.setCardDraggable()
+    this.setListDraggable()
   },
   methods: {
     ...mapMutations([
@@ -73,7 +76,8 @@ export default {
     ...mapActions([
       'FETCH_BOARD',
       'UPDATE_CARD',
-      'UPDATE_BOARD'
+      'UPDATE_BOARD',
+      'UPDATE_LIST'
     ]),
     fetchData () {
       this.loading = true
@@ -81,32 +85,6 @@ export default {
         .then(() => {
           this.loading = false
         })
-    },
-    setCardDraggable () {
-      if (this.cDragger) this.cDragger.destroy()
-
-      this.cDragger = dragger.init(Array.from(this.$el.querySelectorAll('.card-list'))) // dragger 객체 생성
-      this.cDragger.on('drop', (el, wrapper, target, sibling) => { // 이벤트 바인딩
-        console.log('drop event triggered')
-        const targetCard = {
-          id: el.dataset.cardId * 1,
-          pos: 65535
-        }
-
-        const { prev, next } = dragger.siblings({
-          el,
-          wrapper,
-          candidates: Array.from(wrapper.querySelectorAll('.card-item')),
-          type: 'card'
-        })
-
-        if (!prev && next) targetCard.pos = next.pos / 2 // 맨 앞에 있다면
-        else if (prev && !next) targetCard.pos = prev.pos * 2 // 맨 뒤에 있다면
-        else if (prev && next) targetCard.pos = (prev.pos + next.pos) / 2 // 중간에 삽입된 거라면
-
-        console.log('targetCard : ', targetCard)
-        this.UPDATE_CARD(targetCard)
-      })
     },
     onShowSettings () {
       this.SET_IS_SHOW_BOARD_SETTINGS(true)
@@ -127,6 +105,66 @@ export default {
       if (title === this.board.title) return // 방어 코드 : 입력 타이틀과 기존 타이틀이 같을 경우
 
       this.UPDATE_BOARD({ id, title })
+    },
+    setCardDraggable () {
+      if (this.cDragger) this.cDragger.destroy()
+
+      this.cDragger = dragger.init(Array.from(this.$el.querySelectorAll('.card-list'))) // dragger 객체 생성
+      this.cDragger.on('drop', (el, wrapper, target, sibling) => { // 이벤트 바인딩
+        console.log('drop event triggered')
+        const targetCard = {
+          id: el.dataset.cardId * 1,
+          listId: wrapper.dataset.listId * 1,
+          pos: 65535
+        }
+
+        const { prev, next } = dragger.siblings({
+          el,
+          wrapper,
+          candidates: Array.from(wrapper.querySelectorAll('.card-item')),
+          type: 'card'
+        })
+
+        if (!prev && next) targetCard.pos = next.pos / 2 // 맨 위에 있다면
+        else if (prev && !next) targetCard.pos = prev.pos * 2 // 맨 아래에 있다면
+        else if (prev && next) targetCard.pos = (prev.pos + next.pos) / 2 // 중간에 삽입된 거라면
+
+        console.log('targetCard : ', targetCard)
+        this.UPDATE_CARD(targetCard)
+      })
+    },
+    setListDraggable () {
+      if (this.lDragger) this.lDragger.destroy()
+
+      const options = {
+        invalid: (el, handle) => !/^list/.test(handle.className)
+      }
+
+      this.lDragger = dragger.init(
+        Array.from(this.$el.querySelectorAll('.list-section')),
+        options
+      ) // dragger 객체 생성
+      this.lDragger.on('drop', (el, wrapper, target, sibling) => { // 이벤트 바인딩
+        console.log('drop event triggered')
+        const targetList = {
+          id: el.dataset.listId * 1,
+          pos: 65535
+        }
+
+        const { prev, next } = dragger.siblings({
+          el,
+          wrapper,
+          candidates: Array.from(wrapper.querySelectorAll('.list')),
+          type: 'list'
+        })
+
+        if (!prev && next) targetList.pos = next.pos / 2 // 맨 왼쪽에 있다면
+        else if (prev && !next) targetList.pos = prev.pos * 2 // 맨 오른쪽에 있다면
+        else if (prev && next) targetList.pos = (prev.pos + next.pos) / 2 // 중간에 삽입된 거라면
+
+        console.log('targetList : ', targetList)
+        this.UPDATE_LIST(targetList)
+      })
     }
   }
 }
