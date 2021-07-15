@@ -13,7 +13,8 @@
       <AddCard :list-id="data.id" @close="isAddCard=false" />
     </div>
     <div v-else>
-      <a class="add-card-btn" href="" @click.prevent="isAddCard=true">
+      <!-- 자식으로 캡처링 될 클릭 이벤트를 막아준다. -->
+      <a class="add-card-btn" href="" @click.stop.prevent="isAddCard=true">
         &plus; Add a card...
       </a>
     </div>

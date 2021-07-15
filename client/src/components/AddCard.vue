@@ -25,7 +25,7 @@ export default {
   },
   mounted () {
     this.$refs.inputText.focus()
-    // this.setupClickOutside(this.$el)
+    this.setupClickOutside(this.$el)
   },
   methods: {
     ...mapActions([
@@ -53,20 +53,14 @@ export default {
       return cards[cards.length - 1].pos * 2
     },
     setupClickOutside (el) { // 현재 컴포넌트 정보를 받고
-      console.log('el on mounted : ', el)
       document.querySelector('body').addEventListener('click', e => {
-        console.log('el : ', el)
-        console.log('e.target : ', e.target)
         // 클릭한 부분이 컴포넌트 안에 없다면 닫아준다.
         if (el.contains(e.target)) {
           console.log('click inside')
           return
         }
 
-        // 1. Add a card 버튼을 눌르고, 컴포넌트가 마운트되면서 이벤트 등록과 동시에 클릭 이벤트 발생해 이 부분 항상 실행...
-        // 2. 마운트 될 때마다 이벤트 등록하므로 등록된 이벤트 개수가 클릭해서 팝업 띄울 때마다 무한정 늘어남...
-        console.log('click outside')
-        // this.$emit('close')
+        this.$emit('close')
       })
     }
   }
